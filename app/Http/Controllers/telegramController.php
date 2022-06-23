@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Http;
-use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
 class TelegramController extends Controller
@@ -28,12 +27,12 @@ class TelegramController extends Controller
         http_build_query($json) );
     }
 
-    public function GetMessage()
+    public function GetMessage(Request $request)
     {
-        $request = file_get_contents("php://input");
+        $req = $request->getContent();//file_get_contents("php://input");
         $fecha = date('Y-m-d H:i:s');
-        file_put_contents("registro_de_actualizaciones.log", $fecha.' - '.$request, FILE_APPEND);
-        $request = json_decode($request);
+        file_put_contents("registro_de_actualizaciones.log", $fecha.' - '.$req, FILE_APPEND);
+        $request = json_decode($req);
 
         $this->sendMessage($request->message->chat->id, $request->message->text);
 
