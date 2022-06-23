@@ -14,4 +14,4 @@ Route::get('/GetJobById/{id}',[JobController::class,'GetJobById']);
 
 Route::get('/DeleteJob/{id}',[JobController::class,'DeleteJob']);
 
-Route::get('/AAErj9TT0vME9dj3cpg8coT3iwc9EZS35rI',[telegramController::class,'GetUpdate']);
+Route::get('/AAErj9TT0vME9dj3cpg8coT3iwc9EZS35rI',[TelegramController::class,'GetUpdate']);
