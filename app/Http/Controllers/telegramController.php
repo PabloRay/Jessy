@@ -30,10 +30,9 @@ class telegramController extends Controller
 
     public function GetMessage()
     {
-        
         $request = file_get_contents("php://input");
-        /* $fecha = date('Y-m-d H:i:s');
-        file_put_contents("registro_de_actualizaciones.log", $fecha.' - '.$request, FILE_APPEND); */
+        $fecha = date('Y-m-d H:i:s');
+        file_put_contents("registro_de_actualizaciones.log", $fecha.' - '.$request, FILE_APPEND);
         $request = json_decode($request);
 
         $this->sendMessage($request->message->chat->id, $request->message->text);
