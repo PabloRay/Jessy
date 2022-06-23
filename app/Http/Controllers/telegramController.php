@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
-class telegramController extends Controller
+class TelegramController extends Controller
 {
     public function GetUpdate()
     {
