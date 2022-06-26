@@ -30,13 +30,14 @@ class TelegramController extends Controller
 
     public function GetMessage(Request $request)
     {
-        //$req = $request->all();//file_get_contents("php://input");
-        //$fecha = date('Y-m-d H:i:s');
-        //file_put_contents("registro_de_actualizaciones.log", $fecha.' - '.$req, FILE_APPEND);
+        //$req = $request->all();
         $request = json_decode($request->getContent());
 
         $this->sendMessage($request->message->chat->id, $request->message->text);
-        //$this->sendMessage(Arr::get($req,'id'),Arr::get($req,'mensaje'));
+        //$this->sendMessage($req,Arr::get($req,'text'));
+        $log = new LogController;
+        $log->SaveMesagge($request->message->text);
+        //$log->SaveMessage(Arr::get($req,'text'));
     }
 
     

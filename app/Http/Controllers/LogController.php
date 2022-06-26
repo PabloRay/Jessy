@@ -7,27 +7,16 @@ use Illuminate\Http\Request;
 
 class LogController extends Controller
 {
-    public function store(Log $newLog)
-    {
-        $log = $newLog;
-        $log->save();
-    }
-
     public function GetLogs()
     {
         return Log::all();
     }
 
-    public function destroy(log $log)
-    {
-        //
-    }
 
-    public function test(Request $request)
+    public function SaveMessage($mensaje)
     {
         $log = new Log;
-        $log->text = $request->mensaje;
+        $log->text = $mensaje;
         $log->save();
-        return view('index');
     }
 }
