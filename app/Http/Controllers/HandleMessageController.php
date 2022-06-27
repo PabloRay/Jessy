@@ -18,7 +18,7 @@ class HandleMessageController extends Controller
             case "gasto":
                 $parts = explode(",",$partes[1]);
                 $exp->SaveExpense(trim($parts[0]),trim($parts[1]),trim($parts[2]));
-                $log($type,$text);
+                $log->SaveMessage($type,$text);
                 break;
         }
     }
