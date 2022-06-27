@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Log;
-use Illuminate\Http\Request;
 
 class LogController extends Controller
 {
@@ -12,10 +11,10 @@ class LogController extends Controller
         return Log::all();
     }
 
-
-    public function SaveMessage($mensaje)
+    public function SaveMessage($type,$mensaje)
     {
         $log = new Log;
+        $log->type = $type;
         $log->text = $mensaje;
         $log->save();
     }

@@ -15,6 +15,7 @@ class Logs extends Migration
     {
         Schema::create('logs', function (Blueprint $table) {
             $table->id();
+            $table->text('type');
             $table->text('text');
             $table->timestamps();});
     }

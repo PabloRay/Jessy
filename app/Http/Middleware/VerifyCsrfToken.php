@@ -15,6 +15,8 @@ class VerifyCsrfToken extends Middleware
         '/AAErj9TT0vME9dj3cpg8coT3iwc9EZS35rI',
         '/AAErj9TT0vME9dj3cpg8coT3iwc9EZS35rI/*',
         '/test',
-        '/GetMessage'
+        '/GetMessage',
+        '/SaveExpense',
+        '/MainHandle'
     ];
 }
