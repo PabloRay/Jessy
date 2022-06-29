@@ -6,12 +6,10 @@ use App\Http\Controllers\TelegramController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\LogController;
-use App\Http\Controllers\PostController;
 use App\Models\Expense;
 use App\Models\HandleMessage;
 use App\Models\Job;
 
-Route::get('/',[PostController::class, 'index']);
 
 Route::get('/GetJobs',[JobController::class,'GetJobs']);
 
