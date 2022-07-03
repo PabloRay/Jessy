@@ -7,15 +7,15 @@ use Illuminate\Support\Arr;
 
 class TelegramController extends Controller
 {
-    public function GetUpdate()
-    {
-        $apiToken = "5540928888:AAErj9TT0vME9dj3cpg8coT3iwc9EZS35rI";
-        $data = [
-            'chat_id' => '1475337310',
-            'text' => 'Hello from PHP!'
-        ];
-        $response = Http::post(sprintf('https://api.telegram.org/bot%s/sendMessage?',$apiToken),$data); 
-    }
+    // public function GetUpdate()
+    // {
+    //     $apiToken = "5540928888:AAErj9TT0vME9dj3cpg8coT3iwc9EZS35rI";
+    //     $data = [
+    //         'chat_id' => '1475337310',
+    //         'text' => 'Hello from PHP!'
+    //     ];
+    //     $response = Http::post(sprintf('https://api.telegram.org/bot%s/sendMessage?',$apiToken),$data); 
+    // }
 
     function sendMessage($chat_id, $text)
     {
@@ -28,14 +28,14 @@ class TelegramController extends Controller
         http_build_query($json) );
     }
 
-    public function GetMessage(Request $request)
-    {
-        $hand = new HandleMessageController;
-        $request = json_decode($request->getContent());
+    // public function GetMessage(Request $request)
+    // {
+    //     $hand = new HandleMessageController;
+    //     $request = json_decode($request->getContent());
 
-        $this->sendMessage($request->message->chat->id, $request->message->text);
-        $hand->MainHandle($request->message->text);
-    }
+    //     $this->sendMessage($request->message->chat->id, $request->message->text);
+    //     $hand->MainHandle($request->message->text);
+    // }
 
     
 }
