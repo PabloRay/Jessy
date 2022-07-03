@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use DateTime;
 
 class HandleMessageController extends Controller
 {
@@ -18,7 +20,7 @@ class HandleMessageController extends Controller
         switch($type)
         {
             case "comandos":
-                $message = "gasto\n" . "gastos all\n" . "pagar gasto\n" . "gastos -h\n";
+                $message = "1. gasto\n" . "2. gastos all\n" . "3. pagar gasto\n" . "4. gastos -h\n";
                 $telegram->sendMessage($chat_id,$message);
                 break;
 
@@ -39,9 +41,19 @@ class HandleMessageController extends Controller
                 break;
 
             case "gastos -h":
-                $message = "gasto | descripcion, cantidad, status\n" . "gastos all\n" . "pagar gasto | id\n";
+                $message = "1. gasto | descripcion, cantidad, status\n" . "2. gastos all\n" . "3. pagar gasto | id\n";
                 $telegram->sendMessage($chat_id,$message);
                 break;
         }
+    }
+
+    public function Test()
+    {
+        $chat_id = "1475337310";
+        $mytime = Carbon::now();
+        $date = new DateTime($mytime);
+        $fecha = date_format($date,'d/m/Y');
+        $telegram = new TelegramController;
+        $telegram->sendMessage($chat_id,"Mensaje enviado desde cron " . $fecha);
     }
 }

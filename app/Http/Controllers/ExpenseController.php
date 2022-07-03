@@ -26,8 +26,8 @@ class ExpenseController extends Controller
         foreach($expenses as $expense)
         {
             $date = date("d/m/Y",strtotime($expense['created_at']));
-            $message .= sprintf("Descripcion: %s\n costo: $%s\n status: %s\n dia de registro: %s\n_________________________________________\n",
-                    $expense['description'],$expense['amount'],$expense['status'],$date);
+            $message .= sprintf("Id: %s\n Descripcion: %s\n costo: $%s\n status: %s\n dia de registro: %s\n_________________________________________\n",
+                    $expense['id'],$expense['description'],$expense['amount'],$expense['status'],$date);
         }
         $gram->sendMessage(self::$chat_id,$message);
     }

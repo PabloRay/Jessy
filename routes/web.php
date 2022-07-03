@@ -32,3 +32,5 @@ Route::get('/GetAllExpenses',[ExpenseController::class,'ShowAllExpenses']);
 Route::get('/GetExpenseNotPayed',[ExpenseController::class,'GetExpenseNotPayed']);
 
 Route::get('/UpdateExpense/{id}',[ExpenseController::class,'UpdateExpense']);
+
+Route::get('/Test',[HandleMessageController::class,'Test']);

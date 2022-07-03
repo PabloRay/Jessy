@@ -28,14 +28,4 @@ class TelegramController extends Controller
         http_build_query($json) );
     }
 
-    // public function GetMessage(Request $request)
-    // {
-    //     $hand = new HandleMessageController;
-    //     $request = json_decode($request->getContent());
-
-    //     $this->sendMessage($request->message->chat->id, $request->message->text);
-    //     $hand->MainHandle($request->message->text);
-    // }
-
-    
 }
