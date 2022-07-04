@@ -13,6 +13,7 @@ class HandleMessageController extends Controller
         $exp = new ExpenseController;
         $log = new LogController;
         $telegram = new TelegramController;
+        $rem = new ReminderController;
         $partes = explode("|",$text);
         $type = strtolower(trim($partes[0]));
         $chat_id = "1475337310";
@@ -46,7 +47,10 @@ class HandleMessageController extends Controller
                 break;
 
             case "reminder":
-                
+                $parts = explode(",",$partes[1]);
+                $rem->SetReminder($parts[0],$parts[1]);
+                $log->SaveMessage($type,$text);
+                break;
         }
     }
 
