@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BirthdayController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\HandleMessageController;
 use App\Http\Controllers\TelegramController;
@@ -33,4 +34,4 @@ Route::get('/GetExpenseNotPayed',[ExpenseController::class,'GetExpenseNotPayed']
 
 Route::get('/UpdateExpense/{id}',[ExpenseController::class,'UpdateExpense']);
 
-Route::get('/Test',[HandleMessageController::class,'Test']);
+Route::get('/SendBirthDayMessage',[BirthdayController::class,'SendBirthDayMessage']);

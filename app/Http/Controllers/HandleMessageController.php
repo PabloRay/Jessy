@@ -47,13 +47,4 @@ class HandleMessageController extends Controller
         }
     }
 
-    public function Test()
-    {
-        $chat_id = "1475337310";
-        $mytime = Carbon::now();
-        $date = new DateTime($mytime);
-        $fecha = date_format($date,'d/m/Y');
-        $telegram = new TelegramController;
-        $telegram->sendMessage($chat_id,"Mensaje enviado desde cron " . $fecha);
-    }
 }
