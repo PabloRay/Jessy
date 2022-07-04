@@ -7,6 +7,7 @@ use App\Http\Controllers\TelegramController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\LogController;
+use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\WebhookController;
 use App\Http\Controllers\WebScrapingController;
 use App\Models\Expense;
@@ -34,4 +35,4 @@ Route::get('/GetExpenseNotPayed',[ExpenseController::class,'GetExpenseNotPayed']
 
 Route::get('/UpdateExpense/{id}',[ExpenseController::class,'UpdateExpense']);
 
-Route::get('/SendBirthDayMessage',[BirthdayController::class,'SendBirthDayMessage']);
+Route::get('/DoReminder',[ReminderController::class,'DoReminder']);

@@ -44,6 +44,9 @@ class HandleMessageController extends Controller
                 $message = "1. gasto | descripcion, cantidad, status\n" . "2. gastos all\n" . "3. pagar gasto | id\n";
                 $telegram->sendMessage($chat_id,$message);
                 break;
+
+            case "reminder":
+                
         }
     }
 
