@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reminder extends Model
 {
-    protected $table = "reminder";
+    protected $table = "reminders";
     //protected $hidden = ['id'];
     public $fillable = ["text","date"];
 }
