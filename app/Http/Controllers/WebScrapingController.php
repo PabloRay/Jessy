@@ -85,8 +85,11 @@ class WebScrapingController extends Controller
     public function GetOldMatches()
     {
         $client = new Client();
+        $tel = new TelegramController;
         $crawler = $client->request('GET', 'https://www.espn.com.mx/beisbol/mlb/resultados');
         $this->text = "";
+        $this->test = "";
+        $this->count = 0;
         
         //CUADRO PRINCIPAL
         $crawler->filter("[class='ScoreboardScoreCell pa4 mlb baseball ScoreboardScoreCell--post ScoreboardScoreCell--tabletPlus']")->each(function ($node)
@@ -102,7 +105,9 @@ class WebScrapingController extends Controller
             $this->errorsVisit = "";
 
             $this->aux = "";
-            $this->parts = [];
+            $this->partsLocal = [];
+            $this->partsVisit = [];
+            
             
 
             //VISITANTE
@@ -130,14 +135,15 @@ class WebScrapingController extends Controller
                 
                 });
             }
-            $this->parts = [];
-            $this->parts = explode(",",$this->aux);
-            if(count($this->parts)>1)
+            $this->partsLocal = [];
+            $this->partsLocal = explode(",",$this->aux);
+            if(count($this->partsLocal)>1)
             {
-                $this->runsVisit = $this->parts[0];
-                $this->hitsVisit = $this->parts[1];
-                $this->errorsVisit = $this->parts[2];
+                $this->runsLocal = $this->partsLocal[0];
+                $this->hitsLocal = $this->partsLocal[1];
+                $this->errorsLocal = $this->partsLocal[2];
             }
+            $this->aux = "";
             
             //HOME
             $node->filter("[class='ScoreboardScoreCell__Item flex items-center relative pb2 ScoreboardScoreCell__Item--home ScoreboardScoreCell__Item--winner']")->each(function($childNode)
@@ -164,28 +170,25 @@ class WebScrapingController extends Controller
                     });
                 });
             }
-            $this->parts = [];
-            $this->parts = explode(",",$this->aux);
-            if(count($this->parts)>1)
+            $this->partsVisit = [];
+            $this->partsVisit = explode(",",$this->aux);
+            if(count($this->partsVisit)>1)
             {
-                $this->runsLocal = $this->parts[0];
-                $this->hitsLocal = $this->parts[1];
-                $this->errorsLocal = $this->parts[2];
+                $this->runsVisit = $this->partsVisit[0];
+                $this->hitsVisit = $this->partsVisit[1];
+                $this->errorsVisit = $this->partsVisit[2];
             }
+            $this->aux = "";
             
+            $this->text .="Visitante: " . $this->localTeam . "\n";
+            $this->text .="R: " . $this->runsLocal . " H: " . $this->hitsLocal . " E: " . $this->errorsLocal . "\n";
+            $this->text .="Local: " . $this->visitTeam . "\n";
+            $this->text .="R: " . $this->runsVisit . " H: " . $this->hitsVisit . " E: " . $this->errorsVisit . "\n";
+            $this->text .="_________________________________________\n";
 
-            // echo("Visitante: " . $this->localTeam . "<br>");
-            // echo("R: " . $this->runsVisit . " H: " . $this->hitsVisit . " E: " . $this->errorsVisit . "<br>");
-            // echo("Local: " . $this->visitTeam . "<br>");
-            // echo("R: " . $this->runsLocal . " H: " . $this->hitsLocal . " E: " . $this->errorsLocal . "<br>");
-            // echo("_______________________________________________________<br>");
-
-            $this->text .="Visitante: " . $this->localTeam . "<br>";
-            $this->text .="R: " . $this->runsVisit . " H: " . $this->hitsVisit . " E: " . $this->errorsVisit . "<br>";
-            $this->text .="Local: " . $this->visitTeam . "<br>";
-            $this->text .="R: " . $this->runsLocal . " H: " . $this->hitsLocal . " E: " . $this->errorsLocal . "<br>";
-            $this->text .="_______________________________________________________<br>";
+            
         });
+        
         return $this->text;
     }
 }
