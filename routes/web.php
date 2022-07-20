@@ -29,6 +29,8 @@ Route::post('/MainHandle',[HandleMessageController::class,'MainHandle']);
 
 Route::get('/Scrap',[WebScrapingController::class,'GetOldMatches']);
 
+Route::get('/CurrentMatches',[WebScrapingController::class,'GetCurrentMatches']);
+
 Route::get('/GetAllExpenses',[ExpenseController::class,'ShowAllExpenses']);
 
 Route::get('/GetExpenseNotPayed',[ExpenseController::class,'GetExpenseNotPayed']);

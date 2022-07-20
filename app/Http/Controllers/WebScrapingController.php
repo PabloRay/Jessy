@@ -41,6 +41,7 @@ class WebScrapingController extends Controller
             $this->hitsVisit = "";
             $this->errorsVisit = "";
 
+            $this->text = "";
             $this->aux = "";
             $this->parts = [];
 
@@ -75,10 +76,12 @@ class WebScrapingController extends Controller
             $this->hitsLocal = $this->parts[1];
             $this->errorsLocal = $this->parts[2];
 
-            //echo($this->home . " runs: ". $this->aux . " hits: " . $this->hitsHome . "-" . $this->visit."<br>");
-            echo("Visitante: " . $this->localTeam . "<br>");
-            echo("R: " . $this->runsVisit . " H: " . $this->hitsVisit . " E: " . $this->errorsVisit . "<br>");
-            echo("Local: " . $this->visitTeam . "<br>");
+            $this->text .="Visitante: " . $this->localTeam . "\n";
+            $this->text .="R: " . $this->runsLocal . " H: " . $this->hitsLocal . " E: " . $this->errorsLocal . "\n";
+            $this->text .="Local: " . $this->visitTeam . "\n";
+            $this->text .="R: " . $this->runsVisit . " H: " . $this->hitsVisit . " E: " . $this->errorsVisit . "\n";
+            $this->text .="_________________________________________\n";
+            return $this->text;
         });
     }
 
@@ -90,6 +93,7 @@ class WebScrapingController extends Controller
         $this->text = "";
         $this->test = "";
         $this->count = 0;
+        $chat_id = "1475337310";
         
         //CUADRO PRINCIPAL
         $crawler->filter("[class='ScoreboardScoreCell pa4 mlb baseball ScoreboardScoreCell--post ScoreboardScoreCell--tabletPlus']")->each(function ($node)
@@ -189,6 +193,8 @@ class WebScrapingController extends Controller
             
         });
         
+        //echo($this->text);
+        //$tel->sendMessage($chat_id,$this->text);
         return $this->text;
     }
 }
