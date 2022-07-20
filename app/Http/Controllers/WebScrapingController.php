@@ -83,15 +83,15 @@ class WebScrapingController extends Controller
             $this->text .="Local: " . $this->visitTeam . "\n";
             $this->text .="R: " . $this->runsVisit . " H: " . $this->hitsVisit . " E: " . $this->errorsVisit . "\n";
             $this->text .="_________________________________________\n";
-            if(!empty($this->text))
-            {
-                $this->tel->sendMessage($this->chat_id,$this->text);
-            }
-            else{
-                $this->tel->sendMessage($this->chat_id,"No hay juegos en este momento");
-            }
+            // if(!empty($this->text))
+            // {
+            //     $this->tel->sendMessage($this->chat_id,$this->text);
+            // }
+            // else{
+            //     $this->tel->sendMessage($this->chat_id,"No hay juegos en este momento");
+            // }
             //$this->tel->sendMessage($this->chat_id,$this->text);
-            //return $this->text;
+            return $this->text;
             //echo($this->text);
         });
     }
