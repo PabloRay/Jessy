@@ -27,6 +27,8 @@ class WebScrapingController extends Controller
     {
         $client = new Client();
         $crawler = $client->request('GET', 'https://www.espn.com.mx/beisbol/mlb/resultados');
+        $this->tel = new TelegramController;
+        $this->chat_id = "1475337310";
         
         //CUADRO PRINCIPAL
         $crawler->filter("[class='ScoreboardScoreCell pa4 mlb baseball ScoreboardScoreCell--in ScoreboardScoreCell--tabletPlus']")->each(function ($node)
@@ -81,7 +83,16 @@ class WebScrapingController extends Controller
             $this->text .="Local: " . $this->visitTeam . "\n";
             $this->text .="R: " . $this->runsVisit . " H: " . $this->hitsVisit . " E: " . $this->errorsVisit . "\n";
             $this->text .="_________________________________________\n";
-            return $this->text;
+            if(!empty($this->text))
+            {
+                $this->tel->sendMessage($this->chat_id,$this->text);
+            }
+            else{
+                $this->tel->sendMessage($this->chat_id,"No hay juegos en este momento");
+            }
+            //$this->tel->sendMessage($this->chat_id,$this->text);
+            //return $this->text;
+            //echo($this->text);
         });
     }
 

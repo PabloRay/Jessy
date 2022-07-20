@@ -54,10 +54,10 @@ class HandleMessageController extends Controller
                 break;
             
             case "juegos jugados":
-                $text = $mlb->GetOldMatches();
-                if(!empty($text))
+                $message = $mlb->GetOldMatches();
+                if(!empty($message))
                 {
-                    $telegram->sendMessage($chat_id,$text);
+                    $telegram->sendMessage($chat_id,$message);
                 }
                 else{
                     $telegram->sendMessage($chat_id,"No hay juegos terminados aun");
@@ -65,10 +65,10 @@ class HandleMessageController extends Controller
                 break;
 
             case "juegos actuales":
-                $text = $mlb->GetCurrentMatches();
-                if(!empty($text))
+                $message = $mlb->GetCurrentMatches();
+                if(!empty($message))
                 {
-                    $telegram->sendMessage($chat_id,$text);
+                    $telegram->sendMessage($chat_id,$message);
                 }
                 else{
                     $telegram->sendMessage($chat_id,"No hay juegos en este momento");
