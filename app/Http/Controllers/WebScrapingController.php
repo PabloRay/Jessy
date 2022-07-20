@@ -195,6 +195,7 @@ class WebScrapingController extends Controller
         
         //echo($this->text);
         //$tel->sendMessage($chat_id,$this->text);
+        
         return $this->text;
     }
 }

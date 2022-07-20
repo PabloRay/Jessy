@@ -55,7 +55,7 @@ class HandleMessageController extends Controller
             
             case "juegos jugados":
                 $text = $mlb->GetOldMatches();
-                if($text!="")
+                if(!empty($text))
                 {
                     $telegram->sendMessage($chat_id,$text);
                 }
@@ -66,7 +66,7 @@ class HandleMessageController extends Controller
 
             case "juegos actuales":
                 $text = $mlb->GetCurrentMatches();
-                if($text!="")
+                if(!empty($text))
                 {
                     $telegram->sendMessage($chat_id,$text);
                 }
