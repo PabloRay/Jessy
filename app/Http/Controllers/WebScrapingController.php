@@ -7,21 +7,46 @@ use Goutte\Client;
 
 class WebScrapingController extends Controller
 {
-    // public function GetData()
-    // {
-    //     $client = new Client();
-    //     $crawler = $client->request('GET', 'https://www.mlb.com/es/scores');
-    //     /* $crawler->filter("[id='tb-4-body row-0 col-0']")->each(function ($node) {
-    //         print $node->text()."\n";
-    //     }); */
-    //     $crawler->filter("[class='ScoresGamestyle__PaddingWrapper-sc-7t80if-5 btOCDf']")->each(function ($node)
-    //     {
-    //         $test = $node->filter("[class='TeamWrappersstyle__DesktopTeamWrapper-sc-uqs6qh-0 fdaoCu']")->text();
-    //         $visit = $node->filter("[class='teamstyle__DataWrapper-sc-1suh43a-1 gLyCoL']")->text(); 
+    
+    public function GetPreMatches()
+    {
+        $client = new Client();
+        $crawler = $client->request('GET', 'https://www.espn.com.mx/beisbol/mlb/resultados');
+        $this->tel = new TelegramController;
+        $this->chat_id = "1475337310";
+        $this->text = "";
+        
+        //CUADRO PRINCIPAL
+        $crawler->filter("[class='ScoreboardScoreCell pa4 mlb baseball ScoreboardScoreCell--pre ScoreboardScoreCell--tabletPlus']")->each(function ($node)
+        {
+            $this->localTeam = "";
+            $this->visitTeam = "";
+            
 
-    //         echo($test . "-" . $visit."<br>");
-    //     });
-    // }
+            //VISITANTE
+            $node->filter("[class='ScoreboardScoreCell__Item flex items-center relative pb2 ScoreboardScoreCell__Item--away']")->each(function($childNode)
+            {
+                $this->localTeam = $childNode->filter("[class='ScoreCell__TeamName ScoreCell__TeamName--shortDisplayName truncate db']")->text();
+            
+            });
+            //HOME
+            $node->filter("[class='ScoreboardScoreCell__Item flex items-center relative pb2 ScoreboardScoreCell__Item--home']")->each(function($childNode)
+            {
+                $this->visitTeam = $childNode->filter("[class='ScoreCell__TeamName ScoreCell__TeamName--shortDisplayName truncate db']")->text();
+
+            }); 
+
+            // $this->text .="Visitante: " . $this->localTeam . "<br>";
+            // $this->text .="Local: " . $this->visitTeam . "<br>";
+            // $this->text .="_________________________________________<br>";
+            $this->text .="Visitante: " . $this->localTeam . "\n";
+            $this->text .="Local: " . $this->visitTeam . "\n";
+            $this->text .="_________________________________________\n";
+            
+        });
+        //echo($this->text);
+        return $this->text;
+    }
 
     public function GetCurrentMatches()
     {
@@ -29,6 +54,7 @@ class WebScrapingController extends Controller
         $crawler = $client->request('GET', 'https://www.espn.com.mx/beisbol/mlb/resultados');
         $this->tel = new TelegramController;
         $this->chat_id = "1475337310";
+        $this->text = "";
         
         //CUADRO PRINCIPAL
         $crawler->filter("[class='ScoreboardScoreCell pa4 mlb baseball ScoreboardScoreCell--in ScoreboardScoreCell--tabletPlus']")->each(function ($node)
@@ -42,8 +68,7 @@ class WebScrapingController extends Controller
             $this->runsVisit ="";
             $this->hitsVisit = "";
             $this->errorsVisit = "";
-
-            $this->text = "";
+            
             $this->aux = "";
             $this->parts = [];
 
@@ -83,17 +108,15 @@ class WebScrapingController extends Controller
             $this->text .="Local: " . $this->visitTeam . "\n";
             $this->text .="R: " . $this->runsVisit . " H: " . $this->hitsVisit . " E: " . $this->errorsVisit . "\n";
             $this->text .="_________________________________________\n";
-            // if(!empty($this->text))
-            // {
-            //     $this->tel->sendMessage($this->chat_id,$this->text);
-            // }
-            // else{
-            //     $this->tel->sendMessage($this->chat_id,"No hay juegos en este momento");
-            // }
-            //$this->tel->sendMessage($this->chat_id,$this->text);
-            return $this->text;
-            //echo($this->text);
+
+            // $this->text .="Visitante: " . $this->localTeam . "<br>";
+            // $this->text .="R: " . $this->runsLocal . " H: " . $this->hitsLocal . " E: " . $this->errorsLocal . "<br>";
+            // $this->text .="Local: " . $this->visitTeam . "<br>";
+            // $this->text .="R: " . $this->runsVisit . " H: " . $this->hitsVisit . " E: " . $this->errorsVisit . "<br>";
+            // $this->text .="_________________________________________<br>";
+           
         });
+        return $this->text;
     }
 
     public function GetOldMatches()

@@ -78,6 +78,19 @@ class HandleMessageController extends Controller
                     $telegram->sendMessage($chat_id,$message);
                 }
                 break;
+
+                case "juegos por jugar":
+                    $message = "";
+                    $message = $mlb->GetPreMatches();
+                    if(empty($message))
+                    {
+                        $telegram->sendMessage($chat_id,"No hay juegos por jugar el dia de hoy");
+                        
+                    }
+                    else{
+                        $telegram->sendMessage($chat_id,$message);
+                    }
+                    break;
         }
     }
 
