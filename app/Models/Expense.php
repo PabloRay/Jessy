@@ -9,5 +9,5 @@ class Expense extends Model
 {
     protected $table = "expenses";
     //protected $hidden = ['id'];
-    public $fillable = ["description","amount","status"];
+    public $fillable = ["description","amount","apartado"];
 }

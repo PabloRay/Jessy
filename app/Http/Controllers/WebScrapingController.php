@@ -12,16 +12,27 @@ class WebScrapingController extends Controller
     {
         $client = new Client();
         $crawler = $client->request('GET', 'https://www.espn.com.mx/beisbol/mlb/resultados');
+        $secondCrawler = $client->request('GET', 'https://www.espn.com.mx/beisbol/mlb/resultados');
         $this->tel = new TelegramController;
         $this->chat_id = "1475337310";
         $this->text = "";
+        $this->horario = "";
+        $this->test = "";
         
+        $this->test = $secondCrawler->filterXPath("//div[@class='ScoreCell__Time ScoreboardScoreCell__Time h9 clr-gray-03']")->first()->text();
+        
+        //$this->horario = $secondCrawler->filterXPath("//div[@class='ScoreCell__Time ScoreboardScoreCell__Time h9 clr-gray-03']")->text();
         //CUADRO PRINCIPAL
         $crawler->filter("[class='ScoreboardScoreCell pa4 mlb baseball ScoreboardScoreCell--pre ScoreboardScoreCell--tabletPlus']")->each(function ($node)
         {
             $this->localTeam = "";
             $this->visitTeam = "";
-            
+            $this->time = "";
+
+            $node->filter("[class='ScoreboardScoreCell__Overview flex pb3 w-100']")->each(function($timeNode)
+            {
+                $this->time = $timeNode->filter("[class='ScoreCell__Time ScoreboardScoreCell__Time h9 clr-gray-03']")->text();
+            });
 
             //VISITANTE
             $node->filter("[class='ScoreboardScoreCell__Item flex items-center relative pb2 ScoreboardScoreCell__Item--away']")->each(function($childNode)
@@ -36,16 +47,20 @@ class WebScrapingController extends Controller
 
             }); 
 
-            // $this->text .="Visitante: " . $this->localTeam . "<br>";
-            // $this->text .="Local: " . $this->visitTeam . "<br>";
-            // $this->text .="_________________________________________<br>";
-            $this->text .="Visitante: " . $this->localTeam . "\n";
-            $this->text .="Local: " . $this->visitTeam . "\n";
-            $this->text .="_________________________________________\n";
+            $this->text .="Visitante: " . $this->localTeam . "<br>";
+            $this->text .="Local: " . $this->visitTeam . "<br>";
+            $this->text .="Horario: " . $this->time . "<br>";
+            $this->text .="_________________________________________<br>";
+            // $this->text .="Visitante: " . $this->localTeam . "\n";
+            // $this->text .="Local: " . $this->visitTeam . "\n";
+            // $this->text .="Horario: " . $this->time . "\n";
+            // $this->text .="_________________________________________\n";
             
         });
-        //echo($this->text);
-        return $this->text;
+        echo($this->text);
+        echo("Horario: " . $this->horario . "<br>");
+        echo("Test: " . $this->test);
+        //return $this->text;
     }
 
     public function GetCurrentMatches()
@@ -70,12 +85,13 @@ class WebScrapingController extends Controller
             $this->errorsVisit = "";
             
             $this->aux = "";
-            $this->parts = [];
+            $this->localParts = [];
+            $this->visitParts = [];
 
             //VISITANTE
             $node->filter("[class='ScoreboardScoreCell__Item flex items-center relative pb2 ScoreboardScoreCell__Item--away']")->each(function($childNode)
             {
-                $this->localTeam = $childNode->filter("[class='ScoreCell__TeamName ScoreCell__TeamName--shortDisplayName truncate db']")->text();
+                $this->visitTeam = $childNode->filter("[class='ScoreCell__TeamName ScoreCell__TeamName--shortDisplayName truncate db']")->text();
                 $childNode->filter("[class='ScoreboardScoreCell_Linescores baseball flex justify-end']")->each(function($scoreBoard){
                     $scoreBoard->filter("[class='ScoreboardScoreCell__Value flex justify-center pl2 baseball']")->each(function($results){
                         $this->aux .= $results->text() . ",";
@@ -83,37 +99,41 @@ class WebScrapingController extends Controller
                 });
             
             });
-            $this->parts = explode(",",$this->aux);
-            $this->runsVisit = $this->parts[0];
-            $this->hitsVisit = $this->parts[1];
-            $this->errorsVisit = $this->parts[2];
+            $this->visitParts = [];
+            $this->visitParts = explode(",",$this->aux);
+            $this->runsVisit = $this->visitParts[0];
+            $this->hitsVisit = $this->visitParts[1];
+            $this->errorsVisit = $this->visitParts[2];
+            $this->aux = "";
             //HOME
             $node->filter("[class='ScoreboardScoreCell__Item flex items-center relative pb2 ScoreboardScoreCell__Item--home']")->each(function($childNode)
             {
-                $this->visitTeam = $childNode->filter("[class='ScoreCell__TeamName ScoreCell__TeamName--shortDisplayName truncate db']")->text();
+                $this->localTeam = $childNode->filter("[class='ScoreCell__TeamName ScoreCell__TeamName--shortDisplayName truncate db']")->text();
 
                 $childNode->filter("[class='ScoreboardScoreCell_Linescores baseball flex justify-end']")->each(function($scoreBoard){
                     $scoreBoard->filter("[class='ScoreboardScoreCell__Value flex justify-center pl2 baseball']")->each(function($results){
                         $this->aux .= $results->text() . ",";
                     });
                 });
-            }); 
-            $this->parts = explode(",",$this->aux);
-            $this->runsLocal = $this->parts[0];
-            $this->hitsLocal = $this->parts[1];
-            $this->errorsLocal = $this->parts[2];
+            });
+            $this->localParts = [];
+            $this->localParts = explode(",",$this->aux);
+            $this->runsLocal = $this->localParts[0];
+            $this->hitsLocal = $this->localParts[1];
+            $this->errorsLocal = $this->localParts[2];
+            $this->aux = "";
 
-            $this->text .="Visitante: " . $this->localTeam . "\n";
-            $this->text .="R: " . $this->runsLocal . " H: " . $this->hitsLocal . " E: " . $this->errorsLocal . "\n";
-            $this->text .="Local: " . $this->visitTeam . "\n";
-            $this->text .="R: " . $this->runsVisit . " H: " . $this->hitsVisit . " E: " . $this->errorsVisit . "\n";
-            $this->text .="_________________________________________\n";
+            // $this->text .="Visitante: " . $this->visitTeam . "\n";
+            // $this->text .="R: " . $this->runsVisit . " H: " . $this->hitsVisit . " E: " . $this->errorsVisit . "\n";
+            // $this->text .="Local: " . $this->localTeam . "\n";
+            // $this->text .="R: " . $this->runsLocal . " H: " . $this->hitsLocal . " E: " . $this->errorsLocal . "\n";
+            // $this->text .="_________________________________________\n";
 
-            // $this->text .="Visitante: " . $this->localTeam . "<br>";
-            // $this->text .="R: " . $this->runsLocal . " H: " . $this->hitsLocal . " E: " . $this->errorsLocal . "<br>";
-            // $this->text .="Local: " . $this->visitTeam . "<br>";
-            // $this->text .="R: " . $this->runsVisit . " H: " . $this->hitsVisit . " E: " . $this->errorsVisit . "<br>";
-            // $this->text .="_________________________________________<br>";
+            $this->text .="Visitante: " . $this->visitTeam . "<br>";
+            $this->text .="R: " . $this->runsVisit . " H: " . $this->hitsVisit . " E: " . $this->errorsVisit . "<br>";
+            $this->text .="Local: " . $this->localTeam . "<br>";
+            $this->text .="R: " . $this->runsLocal . " H: " . $this->hitsLocal . " E: " . $this->errorsLocal . "<br>";
+            $this->text .="_________________________________________<br>";
            
         });
         return $this->text;
@@ -231,5 +251,53 @@ class WebScrapingController extends Controller
         //$tel->sendMessage($chat_id,$this->text);
         
         return $this->text;
+    }
+
+    public function GetTeamPositions()
+    {
+        $client = new Client();
+        $crawler = $client->request('GET', 'https://www.espn.com.mx/beisbol/mlb/posiciones');
+        $this->teams = "";
+        $this->teams2 = "";
+
+        $crawler->filter("[class='Table__TBODY']")->each(function ($node)
+        {
+            $this->teams = $node->text();
+            //$this->teams = $node->filter("[class='filled Table__TR Table__TR--sm Table__even']")->text();
+            echo($this->teams . "<br>");
+            //echo($this->teams2 . "<br>");
+        });
+    }
+
+    public function GetTeamStatistics()
+    {
+        $client = new Client();
+        $crawler = $client->request('GET', 'https://www.espn.com.mx/beisbol/mlb/equipo/estadisticas/_/nombre/hou/houston-astros');
+        $this->players = "";
+        $this->teams2 = "";
+        $this->nombres = array();
+
+        $crawler->filter("[class='Table__TBODY']")->each(function ($node)
+        {
+            $node->filter("[class='AnchorLink fw-bold']")->each(function($names){
+                if(!in_array($names->text(),$this->nombres))
+                {
+                    array_push($this->nombres,$names->text());
+                }
+            });
+
+            $node->filter("[class='AnchorLink']")->each(function($names){
+                if(!in_array($names->text(),$this->nombres))
+                {
+                    array_push($this->nombres,$names->text());
+                }
+            });
+            
+            
+        });
+        foreach($this->nombres as $nombre)
+        {
+            echo($nombre . "<br>");
+        }
     }
 }

@@ -8,12 +8,12 @@ class ExpenseController extends Controller
 {
     static protected $chat_id = "1475337310";
 
-    public function SaveExpense($desc,$amount,$status)
+    public function SaveExpense($desc,$amount,$apartado)
     {
         $exp = new Expense;
         $exp->description = $desc;
         $exp->amount = $amount;
-        $exp->status = $status;
+        $exp->apartado = $apartado;
         $exp->save();
     }
 

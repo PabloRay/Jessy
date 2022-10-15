@@ -33,6 +33,10 @@ Route::get('/CurrentMatches',[WebScrapingController::class,'GetCurrentMatches'])
 
 Route::get('/PreMatches',[WebScrapingController::class,'GetPreMatches']);
 
+Route::get('/GetPos',[WebScrapingController::class,'GetTeamPositions']);
+
+Route::get('/GetStats',[WebScrapingController::class,'GetTeamStatistics']);
+
 Route::get('/GetAllExpenses',[ExpenseController::class,'ShowAllExpenses']);
 
 Route::get('/GetExpenseNotPayed',[ExpenseController::class,'GetExpenseNotPayed']);
